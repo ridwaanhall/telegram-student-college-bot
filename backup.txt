@@ -1,0 +1,62 @@
+server.py
+
+import os
+from flask import Flask, Response, request
+from Controller.StudentController import ANSWERE, MESSAGE
+
+app = Flask(__name__)
+# Get BOT Token from telegram
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        msg = request.get_json()
+        chat_id, incoming_que = MESSAGE.message_parser(msg)
+        answer = ANSWERE.generate_answer(incoming_que)
+        MESSAGE.send_message_telegram(chat_id, answer)
+        return Response('ok', status=200)
+    else:
+        return "<h1>Something went wrong</h1>"
+
+=======================
+studentcontroler.py
+
+import os, requests
+
+token = os.environ['TELEGRAM_BOT_TOKEN']
+
+
+class ANSWERE:
+    @staticmethod
+    def generate_answer(message):
+        if message == message:
+            url = f'https://api-student-colege.ridwaanhall.repl.co/{message}'
+            response = requests.get(url)
+            
+            if response.status_code == 200:
+                try:
+                    return response.json()
+                except ValueError:
+                    return {"error": "No data available for the given query."}
+            else:
+                return {"error": "Unable to retrieve data from the API."}
+
+
+class MESSAGE:
+    @staticmethod
+    def message_parser(message):
+        chat_id = message['message']['chat']['id']
+        text = message['message']['text']
+        print("Chat ID: ", chat_id)
+        print("Message: ", text)
+        return chat_id, text
+
+    @staticmethod
+    def send_message_telegram(chat_id, text):
+        url = f'https://api.telegram.org/bot{token}/sendMessage'
+        payload = {
+            'chat_id': chat_id,
+            'text': text
+        }
+        response = requests.post(url, json=payload)
+        return response
