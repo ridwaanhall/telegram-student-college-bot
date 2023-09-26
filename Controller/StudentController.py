@@ -6,12 +6,15 @@ token = os.environ['TELEGRAM_BOT_TOKEN']
 class ANSWERE:
     @staticmethod
     def generate_answer(message):
-        if message == message:  # This condition doesn't seem to be doing anything useful
+        if not message:
+            return {"error": "Empty message."}
+
+        if not message.startswith("/"):
             url = f'https://api-student-colege.ridwaanhall.repl.co/{message}'
             response = requests.get(url)
-            
+
             if response.status_code == 200:
-                mahasiswa_list = response.json()["mahasiswa"]
+                mahasiswa_list = response.json().get("mahasiswa", [])
                 result = ""
 
                 for i, mahasiswa in enumerate(mahasiswa_list, start=1):
@@ -22,11 +25,24 @@ class ANSWERE:
                     detail = mahasiswa.get("detail", "N/A")
 
                     result += f"Name: {student_name}\nNIM: {nim}\nCollege: {college_name}\nDetail: {detail}\n\n"
-                    #result += f"Student {i}:\nName: {student_name}\nNIM: {nim}\nStudy Program: {study_program}\nCollege: {college_name}\nDetail: {detail}\n\n"
 
                 return result.strip()  # Remove trailing newline
             else:
                 return {"error": "Unable to retrieve data from the API."}
+        elif message.startswith("/"):
+            url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
+            response = requests.get(url)
+        
+            if response.status_code == 200:
+                data = response.json()
+                dataumum = data.get("dataumum", {})  # Get the dataumum key, or empty dictionary if it doesn't exist
+                return dataumum
+            else:
+                return {"error": "Unable to retrieve data from the API."}
+        
+
+        else:
+            return {"error": "Invalid message format."}
 
 
 
