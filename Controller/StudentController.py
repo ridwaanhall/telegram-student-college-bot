@@ -31,7 +31,7 @@ class ANSWERE:
 
                 return result.strip()  # Remove trailing newline
             else:
-                return {"error": "Unable to retrieve data from the API."}
+                return "Data not Found!"
         elif message.startswith("/"):
             url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
             response = requests.get(url)
@@ -60,7 +60,7 @@ class ANSWERE:
 
                 return result
             else:
-                return {"error": "Unable to retrieve data from the API."}
+                return "Data not Found!"
 
         else:
             return {"error": "Invalid message format."}
