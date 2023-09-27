@@ -6,6 +6,7 @@ token = os.environ['TELEGRAM_BOT_TOKEN']
 
 
 class ANSWERE:
+
     @staticmethod
     def generate_answer(message):
         if not message:
@@ -34,35 +35,55 @@ class ANSWERE:
         elif message.startswith("/"):
             url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
             response = requests.get(url)
-        
+
             if response.status_code == 200:
                 data = response.json()
-                dataumum = data.get("dataumum", {})  # Get the dataumum key, or empty dictionary if it doesn't exist
-                return dataumum
+                dataumum = data.get(
+                    "dataumum", {}
+                )  # Get the dataumum key, or empty dictionary if it doesn't exist
+                # Format the dataumum information
+                result = f"Name: {dataumum.get('nm_pd', 'N/A')}\n" \
+                         f"Gender: {dataumum.get('jk', 'N/A')}\n" \
+                         f"nipd: {dataumum.get('nipd', 'N/A')}\n" \
+                         f"Degree: {dataumum.get('namajenjang', 'N/A')}\n" \
+                         f"Study Program: {dataumum.get('namaprodi', 'N/A')}\n" \
+                         f"College Name: {dataumum.get('namapt', 'N/A')}\n" \
+                         f"Sign Up Type: {dataumum.get('nm_jns_daftar', 'N/A')}\n" \
+                         f"reg_pd: {dataumum.get('reg_pd', 'N/A')}\n" \
+                         f"From College Name: {dataumum.get('nm_pt_asal', 'N/A')}\n" \
+                         f"From SP Name: {dataumum.get('nm_prodi_asal', 'N/A')}\n" \
+                         f"Desc Out: {dataumum.get('ket_keluar', 'N/A')}\n" \
+                         f"Date Out: {dataumum.get('tgl_keluar', 'N/A')}\n" \
+                         f"Serial Number Ijazah: {dataumum.get('no_seri_ijazah', 'N/A')}\n" \
+                         f"Prof: {dataumum.get('sert_prof', 'N/A')}\n" \
+                         f"Start: {dataumum.get('mulai_smt', 'N/A')}"
+
+                return result
             else:
                 return {"error": "Unable to retrieve data from the API."}
-        
 
         else:
             return {"error": "Invalid message format."}
 
 
-
 class MESSAGE:
+
     @staticmethod
     def message_parser(message):
         chat_id = message['message']['chat']['id']
-        text = message['message']['text']
-        print("Chat ID: ", chat_id)
-        print("Message: ", text)
-        return chat_id, text
+        if 'text' in message['message']:
+            text = message['message']['text']
+            print("Chat ID: ", chat_id)
+            print("Message: ", text)
+            return chat_id, text
+        else:
+            print("Chat ID: ", chat_id)
+            print("Message does not contain text.")
+            return chat_id, []
 
     @staticmethod
     def send_message_telegram(chat_id, text):
         url = f'https://api.telegram.org/bot{token}/sendMessage'
-        payload = {
-            'chat_id': chat_id,
-            'text': text
-        }
+        payload = {'chat_id': chat_id, 'text': text}
         response = requests.post(url, json=payload)
         return response
