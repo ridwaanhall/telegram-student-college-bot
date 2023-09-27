@@ -114,3 +114,123 @@ class MESSAGE:
         }
         response = requests.post(url, json=payload)
         return response
+
+
+
+=======================================
+
+data status kuliah
+
+elif message.startswith("/"):
+    url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        dataumum = data.get("dataumum", {})
+        datastatuskuliah = data.get("datastatuskuliah", [])
+
+        result = f"Name: {dataumum.get('nm_pd', 'N/A')}\n" \
+                 f"Gender: {dataumum.get('jk', 'N/A')}\n" \
+                 f"nipd: {dataumum.get('nipd', 'N/A')}\n" \
+                 f"Degree: {dataumum.get('namajenjang', 'N/A')}\n" \
+                 f"Study Program: {dataumum.get('namaprodi', 'N/A')}\n" \
+                 f"College Name: {dataumum.get('namapt', 'N/A')}\n" \
+                 f"Sign Up Type: {dataumum.get('nm_jns_daftar', 'N/A')}\n" \
+                 f"reg_pd: {dataumum.get('reg_pd', 'N/A')}\n" \
+                 f"From College Name: {dataumum.get('nm_pt_asal', 'N/A')}\n" \
+                 f"From SP Name: {dataumum.get('nm_prodi_asal', 'N/A')}\n" \
+                 f"Desc Out: {dataumum.get('ket_keluar', 'N/A')}\n" \
+                 f"Date Out: {dataumum.get('tgl_keluar', 'N/A')}\n" \
+                 f"Serial Number Ijazah: {dataumum.get('no_seri_ijazah', 'N/A')}\n" \
+                 f"Prof: {dataumum.get('sert_prof', 'N/A')}\n" \
+                 f"Start: {dataumum.get('mulai_smt', 'N/A')}"
+
+        if datastatuskuliah:
+            result += "\n\nData Status Kuliah:\n"
+            for status in datastatuskuliah:
+                result += f"\nID: {status['id_smt']}\n" \
+                          f"SKS: {status['sks_smt']}\n" \
+                          f"nm_stat_mhs: {status['nm_stat_mhs']}\n"
+
+        return result
+
+    else:
+        return "Data not Found!"
+
+
+
+============================
+
+data study
+
+
+elif message.startswith("/"):
+    url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        dataumum = data.get("dataumum", {})
+        datastatuskuliah = data.get("datastatuskuliah", [])
+        datastudi = data.get("datastudi", [])
+
+        result = f"Data Umum\n" \
+                 f"Name: {dataumum.get('nm_pd', 'N/A')}\n" \
+                 f"Gender: {dataumum.get('jk', 'N/A')}\n" \
+                 f"nipd: {dataumum.get('nipd', 'N/A')}\n" \
+                 f"Degree: {dataumum.get('namajenjang', 'N/A')}\n" \
+                 f"Study Program: {dataumum.get('namaprodi', 'N/A')}\n" \
+                 f"College Name: {dataumum.get('namapt', 'N/A')}\n" \
+                 f"Sign Up Type: {dataumum.get('nm_jns_daftar', 'N/A')}\n" \
+                 f"reg_pd: {dataumum.get('reg_pd', 'N/A')}\n" \
+                 f"From College Name: {dataumum.get('nm_pt_asal', 'N/A')}\n" \
+                 f"From SP Name: {dataumum.get('nm_prodi_asal', 'N/A')}\n" \
+                 f"Desc Out: {dataumum.get('ket_keluar', 'N/A')}\n" \
+                 f"Date Out: {dataumum.get('tgl_keluar', 'N/A')}\n" \
+                 f"Serial Number Ijazah: {dataumum.get('no_seri_ijazah', 'N/A')}\n" \
+                 f"Prof: {dataumum.get('sert_prof', 'N/A')}\n" \
+                 f"Start: {dataumum.get('mulai_smt', 'N/A')}\n"
+
+        if datastatuskuliah:
+            result += "\nData Status Kuliah:\n"
+            for status in datastatuskuliah:
+                result += f"\nID: {status['id_smt']}\n" \
+                          f"SKS: {status['sks_smt']}\n" \
+                          f"nm_stat_mhs: {status['nm_stat_mhs']}\n"
+
+        if datastudi:
+            result += "\nData Study:\n"
+            for study in datastudi:
+                result += f"\nKode MK: {study['kode_mk']}\n" \
+                          f"Name MK: {study['nm_mk']}\n" \
+                          f"SKS: {study['sks_mk']}\n" \
+                          f"ID SMT: {study['id_smt']}\n" \
+                          f"Grade: {study['nilai_huruf']}\n"
+
+        return result
+
+    else:
+        return "Data not Found!"
+
+
+============================
+
+font code
+
+class MESSAGE:
+
+    @staticmethod
+    def send_message_telegram(chat_id, text):
+        url = f'https://api.telegram.org/bot{token}/sendMessage'
+        
+        # Add Markdown format to the message
+        text = f'```{text}```'
+        
+        payload = {
+            'chat_id': chat_id,
+            'text': text,
+            'parse_mode': 'Markdown'  # Set parse_mode to Markdown
+        }
+        response = requests.post(url, json=payload)
+        return response
