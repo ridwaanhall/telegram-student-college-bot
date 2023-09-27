@@ -1,4 +1,6 @@
-import os, requests
+import os
+
+import requests
 
 token = os.environ['TELEGRAM_BOT_TOKEN']
 
@@ -17,10 +19,10 @@ class ANSWERE:
                 mahasiswa_list = response.json().get("mahasiswa", [])
                 result = ""
 
-                for i, mahasiswa in enumerate(mahasiswa_list, start=1):
+                for _i, mahasiswa in enumerate(mahasiswa_list, start=1):
                     student_name = mahasiswa.get("student name", "N/A")
                     nim = mahasiswa.get("nim", "N/A")
-                    study_program = mahasiswa.get("study program", "N/A")
+                    mahasiswa.get("study program", "N/A")
                     college_name = mahasiswa.get("college name", "N/A")
                     detail = mahasiswa.get("detail", "N/A")
 

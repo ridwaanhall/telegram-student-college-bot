@@ -1,5 +1,5 @@
-import os
 from flask import Flask, Response, request
+
 from Controller.StudentController import ANSWERE, MESSAGE
 
 app = Flask(__name__)
