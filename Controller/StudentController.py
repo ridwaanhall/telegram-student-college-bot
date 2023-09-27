@@ -35,14 +35,15 @@ class ANSWERE:
         elif message.startswith("/"):
             url = f'https://api-student-colege.ridwaanhall.repl.co/detail_student/{message[1:]}'
             response = requests.get(url)
-
+        
             if response.status_code == 200:
                 data = response.json()
-                dataumum = data.get(
-                    "dataumum", {}
-                )  # Get the dataumum key, or empty dictionary if it doesn't exist
-                # Format the dataumum information
-                result = f"Name: {dataumum.get('nm_pd', 'N/A')}\n" \
+                dataumum = data.get("dataumum", {})
+                datastatuskuliah = data.get("datastatuskuliah", [])
+                datastudi = data.get("datastudi", [])
+        
+                result = f" ----------- DATA UMUM -----------\n" \
+                         f"Name: {dataumum.get('nm_pd', 'N/A')}\n" \
                          f"Gender: {dataumum.get('jk', 'N/A')}\n" \
                          f"nipd: {dataumum.get('nipd', 'N/A')}\n" \
                          f"Degree: {dataumum.get('namajenjang', 'N/A')}\n" \
@@ -56,11 +57,30 @@ class ANSWERE:
                          f"Date Out: {dataumum.get('tgl_keluar', 'N/A')}\n" \
                          f"Serial Number Ijazah: {dataumum.get('no_seri_ijazah', 'N/A')}\n" \
                          f"Prof: {dataumum.get('sert_prof', 'N/A')}\n" \
-                         f"Start: {dataumum.get('mulai_smt', 'N/A')}"
-
+                         f"Start: {dataumum.get('mulai_smt', 'N/A')}\n"
+        
+                if datastatuskuliah:
+                    result += "\n ------- DATA STATUS KULIAH: -------\n"
+                    for status in datastatuskuliah:
+                        result += f"\nID SMT: {status['id_smt']}\n" \
+                                  f"SKS: {status['sks_smt']}\n" \
+                                  f"Status: {status['nm_stat_mhs']}\n"
+        
+                if datastudi:
+                    result += "\n -------- DATA STUDY: --------\n"
+                    for study in datastudi:
+                        result += f"\nCode MK: {study['kode_mk']}\n" \
+                                  f"Name MK: {study['nm_mk']}\n" \
+                                  f"SKS: {study['sks_mk']}\n" \
+                                  f"ID SMT: {study['id_smt']}\n" \
+                                  f"Grade: {study['nilai_huruf']}\n"
+        
                 return result
+        
             else:
                 return "Data not Found!"
+
+
 
         else:
             return {"error": "Invalid message format."}
@@ -84,6 +104,7 @@ class MESSAGE:
     @staticmethod
     def send_message_telegram(chat_id, text):
         url = f'https://api.telegram.org/bot{token}/sendMessage'
-        payload = {'chat_id': chat_id, 'text': text}
+        text = f'```{text}```'
+        payload = {'chat_id': chat_id, 'text': text, 'parse_mode': 'Markdown'}
         response = requests.post(url, json=payload)
         return response
