@@ -62,9 +62,9 @@ class ANSWERE:
                 if datastatuskuliah:
                     result += "\n ------- DATA STATUS KULIAH: -------\n"
                     for status in datastatuskuliah:
-                        result += f"\nID SMT: {status['id_smt']}\n" \
-                                  f"SKS: {status['sks_smt']}\n" \
-                                  f"Status: {status['nm_stat_mhs']}\n"
+                        result += f"\nID SMT : {status['id_smt']}\n" \
+                                  f"SKS    : {status['sks_smt']}\n" \
+                                  f"Status : {status['nm_stat_mhs']}\n"
         
                 if datastudi:
                     result += "\n -------- DATA STUDY: --------\n"
