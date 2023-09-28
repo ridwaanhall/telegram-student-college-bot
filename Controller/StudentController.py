@@ -60,7 +60,7 @@ class ANSWERE:
                          f"Start: {dataumum.get('mulai_smt', 'N/A')}\n"
         
                 if datastatuskuliah:
-                    result += "\n ------- DATA STATUS KULIAH: -------\n"
+                    result += "\n ---- DATA STATUS KULIAH: ----\n"
                     for status in datastatuskuliah:
                         result += f"\nID SMT : {status['id_smt']}\n" \
                                   f"SKS    : {status['sks_smt']}\n" \
