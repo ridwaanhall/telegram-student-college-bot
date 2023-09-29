@@ -10,7 +10,7 @@ class ANSWERE:
     @staticmethod
     def generate_answer(message):
         if not message:
-            return {"error": "Empty message."}
+            return "Empty message."
 
         if not message.startswith("/"):
             url = f'https://api-student-colege.ridwaanhall.repl.co/{message}'
@@ -18,18 +18,23 @@ class ANSWERE:
 
             if response.status_code == 200:
                 mahasiswa_list = response.json().get("mahasiswa", [])
-                result = ""
-
-                for _i, mahasiswa in enumerate(mahasiswa_list, start=1):
-                    student_name = mahasiswa.get("student name", "N/A")
-                    nim = mahasiswa.get("nim", "N/A")
-                    mahasiswa.get("study program", "N/A")
-                    college_name = mahasiswa.get("college name", "N/A")
-                    detail = mahasiswa.get("detail", "N/A")
-
-                    result += f"Name: {student_name}\nNIM: {nim}\nCollege: {college_name}\nDetail: {detail}\n\n"
-
-                return result.strip()  # Remove trailing newline
+                
+                if mahasiswa_list:
+                    result = "\n ---- LIST MAHASISWA : ----\n"
+    
+                    for mahasiswa in mahasiswa_list:
+                        student_name = mahasiswa.get("student name", "N/A")
+                        nim = mahasiswa.get("nim", "N/A")
+                        mahasiswa.get("study program", "N/A")
+                        college_name = mahasiswa.get("college name", "N/A")
+                        detail = mahasiswa.get("detail", "N/A")
+    
+                        result += f"Name: {student_name}\n"\
+                                  f"NIM: {nim}\n"\
+                                  f"College: {college_name}\n"\
+                                  f"Detail: {detail}\n\n"
+    
+                    return result
             else:
                 return "Data not Found!"
         elif message.startswith("/"):
@@ -83,7 +88,7 @@ class ANSWERE:
 
 
         else:
-            return {"error": "Invalid message format."}
+            return "Invalid message format."
 
 
 class MESSAGE:
