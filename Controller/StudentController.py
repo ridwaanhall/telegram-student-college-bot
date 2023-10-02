@@ -20,7 +20,7 @@ class ANSWERE:
                 mahasiswa_list = response.json().get("mahasiswa", [])
                 
                 if mahasiswa_list:
-                    result = "\n ---- LIST MAHASISWA : ----\n"
+                    result = "\n ---- LIST MAHASISWA ----\n"
     
                     for mahasiswa in mahasiswa_list:
                         student_name = mahasiswa.get("student name", "N/A")
@@ -65,14 +65,14 @@ class ANSWERE:
                          f"Start: {dataumum.get('mulai_smt', 'N/A')}\n"
         
                 if datastatuskuliah:
-                    result += "\n ---- DATA STATUS KULIAH: ----\n"
+                    result += "\n ---- DATA STATUS KULIAH ----\n"
                     for status in datastatuskuliah:
                         result += f"\nID SMT : {status['id_smt']}\n" \
                                   f"SKS    : {status['sks_smt']}\n" \
                                   f"Status : {status['nm_stat_mhs']}\n"
         
                 if datastudi:
-                    result += "\n -------- DATA STUDY: --------\n"
+                    result += "\n -------- DATA STUDY --------\n"
                     for study in datastudi:
                         result += f"\nCode MK: {study['kode_mk']}\n" \
                                   f"Name MK: {study['nm_mk']}\n" \
