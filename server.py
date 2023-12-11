@@ -14,4 +14,4 @@ def index():
         MESSAGE.send_message_telegram(chat_id, answer)
         return Response('ok', status=200)
     else:
-        return "<h1>gew uda muakk</h1>"
+        return "<h1>you're lost</h1>"
