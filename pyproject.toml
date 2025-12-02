@@ -7,7 +7,7 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = ">=3.10.0,<3.11"
 flask = "^2.3.3"
-requests = "^2.31.0"
+requests = "^2.32.4"
 html2text = "^2020.1.16"
 
 [tool.pyright]
